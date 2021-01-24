@@ -44,6 +44,12 @@ Le tagger enregistre les tags dans un fichier json pour chaque image
 et place le fichier dans `<TAG-DIR>`. Il y place aussi la version
 taggée de l'image.  Le répertoire est créé si besoin.
 
+Le repository comporte déjà un répertoire data/tags qui contient les
+premiers tags. En spécifiant ce répertoire (comme dans `launch.sh` par
+exemple) le tagger ira directement à la première image non
+taggée. Cependant, en revenant en arrière (touche 'p'), on peut
+contrôler les tags.
+
 A chaque lancement le tagger va à la premiere image qui n'a pas de tag.
 
 On peut naviguer dans les images (voir documentation en tappant
