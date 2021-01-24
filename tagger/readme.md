@@ -2,7 +2,7 @@
 
 Le tagger est écrit en python3
 
-Pour l'installation (testé sous linux Ubuntu 18.04.4 LTS):
+Pour l'installation (testée sous linux Ubuntu 18.04.4 LTS):
 Prérequis:
 - python3 (testé avec python 3.6.9)
 - virtualenv:
@@ -16,7 +16,10 @@ Installation:
   ./install.sh
 ```
 
-Placer l'arborescence des images dans le répertoire `data` du repository (c'est le répertoire par défaut, ça n'est pas obligatoire, sinon, il faudra le spécifier en lançant le script.
+Placer l'arborescence des images dans le répertoire `data` du
+repository (ou ailleurs, mais c'est le répertoire par défaut, ça n'est
+pas obligatoire, de toute façon il faudra le spécifier en lançant le
+script). Les données ne figurent pas dans le dépot.
 
 Lancement du tagger:
 ```
@@ -24,9 +27,11 @@ Lancement du tagger:
   python src/tag.py <PATH-ARBORESCENCE-IMAGE> <TAG-DIR>
 ```
 
-Le tagger enregistre les tags dans un fichier json pour chaque image et place le fichier dans <TAG-DIR>
+Le tagger enregistre les tags dans un fichier json pour chaque image
+et place le fichier dans <TAG-DIR>. Le répertoire est créé si besoin.
 
-A chaque lancement le tagger va à la premiere image qui n'a pas de tag
+A chaque lancement le tagger va à la premiere image qui n'a pas de tag.
 
-On peut naviguer dans les images (voir documentation en tappant > python tagger/tag.py help
+On peut naviguer dans les images (voir documentation en tappant
+`python tagger/tag.py help`)
 
