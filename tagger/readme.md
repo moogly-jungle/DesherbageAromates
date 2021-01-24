@@ -49,3 +49,4 @@ A chaque lancement le tagger va à la premiere image qui n'a pas de tag.
 On peut naviguer dans les images (voir documentation en tappant
 `python tagger/tag.py help`)
 
+Il y a un exemple de lancement du tagger dans `launch.sh`
