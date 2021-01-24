@@ -59,12 +59,14 @@ def read_tags(fn):
         tags = []
         print('  - no previous tags --')
     
-def save_tags(fn):
+def save_tags(fn, tagged_img):
     with open(ll.tag_file(fn), 'w') as outfile:
         fn_data = { 'path' : fn, 'tags' : tags }
         json.dump(fn_data, outfile)
     print('  - tags saved in ' + ll.tag_file(fn))
-        
+    cv2.imwrite(ll.tag_img_file(fn), tagged_img)
+    print('  - tagged image saved in ' + ll.tag_img_file(fn))
+    
 def process_file(fn):
     global img, typ, tags
     img = cv2.imread(fn)
@@ -87,7 +89,7 @@ def process_file(fn):
         if key == ord('z'):
             typ = 'plant'
         if key == ord('s'):
-            save_tags(fn)
+            save_tags(fn, img)
         redraw = False
         if key == ord('u'): # UNDO
             if len(tags) > 0: tags = tags[0:-1]
@@ -100,7 +102,7 @@ def process_file(fn):
         for t in tags: draw_tag(img, t)
         cv2.imshow("image", img)
     cv2.destroyAllWindows()
-    save_tags(fn)
+    save_tags(fn, img)
     return key
 
 def main():
