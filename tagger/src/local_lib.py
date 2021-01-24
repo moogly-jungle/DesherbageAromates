@@ -1,9 +1,10 @@
 import os
 import re
 
-data_dir = "../data/initial"
-file_format = re.compile(r'(.*)/([^/]+\.JPG)$')
-brut_file = re.compile(r'(.*).JPG$')
+data_dir = '../data'
+tag_dir = '../data/tags'
+
+file_format = re.compile(r'(.*)/([^/]+)\.JPG$')
 
 def file_list(d):
     print('- collecting files of ' + d)
@@ -14,17 +15,22 @@ def file_list(d):
         m = file_format.match(f)
         if m:
             dir = m.group(1)
-            file = m.group(2)
+            file = m.group(2) + '.JPG'
             the_files.append((dir,file))
     the_files = list(sorted(the_files))
     return the_files
 
+def get_file_name(fn):
+    m = file_format.match(fn)
+    if not m:
+        print('Error: unable to get the file name from ' + fn)
+    return m.group(2) + '.JPG'
 
 def tag_file(fn):
-    m = brut_file.match(fn)
+    m = file_format.match(fn)
     if not m:
         print('Error: ' + fn + ' is not a picture file')
         return None
-    root = m.group(1)
-    return root + '.json'
+    root = m.group(2)
+    return tag_dir + '/' + root + '.json'
     

@@ -54,14 +54,15 @@ def read_tags(fn):
     global tags
     try:
         with open(ll.tag_file(fn)) as json_file:
-            tags = json.load(json_file)
+            tags = json.load(json_file)['tags']
     except:
         tags = []
         print('  - no previous tags --')
     
 def save_tags(fn):
-    with open(ll.tag_file(fn), 'w') as outfile:  
-        json.dump(tags, outfile)
+    with open(ll.tag_file(fn), 'w') as outfile:
+        fn_data = { 'path' : fn, 'tags' : tags }
+        json.dump(fn_data, outfile)
     print('  - tags saved in ' + ll.tag_file(fn))
         
 def process_file(fn):
@@ -106,7 +107,7 @@ def main():
     global the_files
     print('usage:')
     print('- starting tagging:')
-    print('> ' + sys.argv[0] + ' <data_dir>')
+    print('> ' + sys.argv[0] + ' <data_dir> <tag_dir>')
     print('  (a) selecting adventices')
     print('  (z) selecting plants')
     print('  (u) undo')
@@ -115,35 +116,24 @@ def main():
     print('  (n) next image')
     print('  (p) previous image')
     print('')
-    print('- removing all tag files ')
-    print('> ' + sys.argv[0] + ' <data_dir> remove_tags')
-    print('')
     if len(sys.argv) > 1 and sys.argv[1] == 'help':
         return
 
-    if len(sys.argv) < 2:
-        if not os.path.exists(ll.data_dir):
-            print('Error: I need the data directory (default is "' + ll.data_dir + '"')
-            return
-    else:
-        ll.data_dir = sys.argv[1]
-        if not os.path.exists(ll.data_dir):
-            print('Error: data directory does not exists ('+sys.argv[1]+'))')
-            return
-
+    if len(sys.argv) < 3:
+        return
+    
+    ll.data_dir = sys.argv[1]
+    if not os.path.exists(ll.data_dir):
+        print('Error: data directory does not exists ('+sys.argv[1]+'))')
+        return
+    ll.tag_dir = sys.argv[2]
+    if not os.path.exists(ll.tag_dir):
+        os.system('mkdir ' + ll.tag_dir + ' 2>/dev/null')        
+        print('tag directory created: ' + ll.tag_dir)
+    
     print('- processing all JPG files in ' + ll.data_dir)
     the_files = ll.file_list(ll.data_dir)
 
-    if len(sys.argv)>1:
-        if sys.argv[1]=='remove_tags':
-            n = 0
-            while n < len(the_files):
-                tag_file = ll.tag_file(get_nth_file_path(n))
-                if os.path.isfile(tag_file):
-                    print('removing ' + tag_file)
-                    os.system('rm -f "' + tag_file + '"')
-                n = n+1
-            return
     n = 0
     # on cherche le premier fichier non taggé
     while (os.path.isfile(ll.tag_file(get_nth_file_path(n)))):
