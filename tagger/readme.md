@@ -32,6 +32,11 @@ rectangles sont rouges (aventices) (touche 'a') ou verts (plan
 correct) (touche 'z'). Les positions des rectangles sont sauvées dans
 un fichier json.
 
+On a un "undo" (touche 'u') ou un "clear" (touche 'c'). Et puis "next"
+(touche 'n') ou "previous" (touche 'p') pour naviguer dans les
+images. Attention, il n'y a pas de confirmation pour sauvegarder les
+tags, ils sont automatiquement enregistrés.
+
 Le tagger va chercher les fichiers images sous la forme de fichiers
 JPG dans l'arborescence de `<PATH-ARBORESCENCE-IMAGE>`.
 
