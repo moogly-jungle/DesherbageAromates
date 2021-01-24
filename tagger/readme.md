@@ -16,15 +16,15 @@ Installation:
   ./install.sh
 ```
 
-Placer l'arborescence des images dans le répertoire data
+Placer l'arborescence des images dans le répertoire `data` du repository (c'est le répertoire par défaut, ça n'est pas obligatoire, sinon, il faudra le spécifier en lançant le script.
 
 Lancement du tagger:
 ```
   source venv/bin/activate
-  python src/tag.py <PATH-ARBORESCENCE-IMAGE>
+  python src/tag.py <PATH-ARBORESCENCE-IMAGE> <TAG-DIR>
 ```
 
-Le tagger enregistre les tags dans un fichier json pour chaque image dans le même répertoire que l'image elle meme.
+Le tagger enregistre les tags dans un fichier json pour chaque image et place le fichier dans <TAG-DIR>
 
 A chaque lancement le tagger va à la premiere image qui n'a pas de tag
 
