@@ -15,6 +15,9 @@ Installation:
 ```
   ./install.sh
 ```
+
+Placer l'arborescence des images dans le répertoire data
+
 Lancement du tagger:
 ```
   source venv/bin/activate
@@ -22,6 +25,8 @@ Lancement du tagger:
 ```
 
 Le tagger enregistre les tags dans un fichier json pour chaque image dans le même répertoire que l'image elle meme.
+
 A chaque lancement le tagger va à la premiere image qui n'a pas de tag
+
 On peut naviguer dans les images (voir documentation en tappant > python tagger/tag.py help
 
