@@ -41,7 +41,8 @@ Le tagger va chercher les fichiers images sous la forme de fichiers
 JPG dans l'arborescence de `<PATH-ARBORESCENCE-IMAGE>`.
 
 Le tagger enregistre les tags dans un fichier json pour chaque image
-et place le fichier dans `<TAG-DIR>`. Le répertoire est créé si besoin.
+et place le fichier dans `<TAG-DIR>`. Il y place aussi la version
+taggée de l'image.  Le répertoire est créé si besoin.
 
 A chaque lancement le tagger va à la premiere image qui n'a pas de tag.
 
