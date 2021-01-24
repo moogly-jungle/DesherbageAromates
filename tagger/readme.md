@@ -27,6 +27,11 @@ Lancement du tagger:
   python src/tag.py <PATH-ARBORESCENCE-IMAGE> <TAG-DIR>
 ```
 
+Tagger une image consiste à dessiner des rectangles à la souris. Les
+rectangles sont rouges (aventices) (touche 'a') ou verts (plan
+correct) (touche 'z'). Les positions des rectangles sont sauvées dans
+un fichier json.
+
 Le tagger va chercher les fichiers images sous la forme de fichiers
 JPG dans l'arborescence de `<PATH-ARBORESCENCE-IMAGE>`.
 
