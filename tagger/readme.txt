@@ -12,7 +12,7 @@ Installation:
 
 Lancement du tagger:
 > source venv/bin/activate
-> python tagger/tag.py <PATH-ARBORESCENCE-IMAGE>
+> python src/tag.py <PATH-ARBORESCENCE-IMAGE>
 
 Le tagger enregistre les tags dans un fichier json pour chaque image dans le même répertoire que l'image elle meme.
 A chaque lancement le tagger va à la premiere image qui n'a pas de tag
