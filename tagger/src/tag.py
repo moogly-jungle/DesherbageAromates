@@ -6,6 +6,7 @@ import sys
 import cv2
 import local_lib as ll
 import json
+from math import abs
 
 # TODO: un clear all tag
 
@@ -17,7 +18,7 @@ def get_nth_file_path(n):
 
 
 img = None
-img_size = (800, 800)
+img_size = (1024, 768)
 
 
 def relative_pos(pos):
@@ -38,6 +39,7 @@ def graphic_pos(pos):
     return (int(pos[0]*img_size[0]), int(pos[1]*img_size[1]))
 
 
+CLASSES = {'plant': 0, 'adventice': 1}
 colors = {'plant': (0, 255, 0), 'adventice': (0, 0, 255)}
 
 typ = 'adventice'
@@ -75,11 +77,22 @@ def read_tags(fn):
         print('  - no previous tags --')
 
 
+def dump_yolo_tags(tags, outfile):
+    for t in tags:
+        outfile.write("{} {} {} {} {}\n".format(
+            CLASSES[t[0]], (t[1][0]+t[2][0])/2.0, (t[1][1]+t[2][1])/2.0, abs(t[2][0]-t[1][0]), abs(t[2][1]-t[1][1])))
+
+
 def save_tags(fn, tagged_img):
     with open(ll.tag_file(fn), 'w') as outfile:
         fn_data = {'path': fn, 'tags': tags}
         json.dump(fn_data, outfile)
+
+    with open(ll.tag_file_yolo(fn), 'w') as outfile:
+        dump_yolo_tags(tags, outfile)
+
     print('  - tags saved in ' + ll.tag_file(fn))
+    print('  - yolo tags saved in ' + ll.tag_file_yolo(fn))
     cv2.imwrite(ll.tag_img_file(fn), tagged_img)
     print('  - tagged image saved in ' + ll.tag_img_file(fn))
 
