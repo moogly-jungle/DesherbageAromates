@@ -41,8 +41,8 @@ def graphic_pos(pos):
     return (int(pos[0]*img_size[0]), int(pos[1]*img_size[1]))
 
 
-CLASSES = {'plant': 0, 'adventice': 1}
-colors = {'plant': (0, 255, 0), 'adventice': (0, 0, 255)}
+CLASSES = {'plant': 0, 'adventice': 1, 'unknown': 2}
+colors = {'plant': (0, 255, 0), 'adventice': (0, 0, 255), 'unknown':(255,0,0) }
 
 typ = 'adventice'
 tags = []
@@ -122,6 +122,8 @@ def process_file(fn):
             typ = 'adventice'
         if key == ord('z'):
             typ = 'plant'
+        if key == ord('e'):
+            typ = 'unknown'
         if key == ord('s'):
             save_tags(fn, img)
         redraw = False
@@ -149,6 +151,7 @@ def main():
     print('> ' + sys.argv[0] + ' <data_dir> <tag_dir>')
     print('  (a) selecting adventices')
     print('  (z) selecting plants')
+    print('  (e) selecting unknown plant')
     print('  (u) undo')
     print('  (c) clear')
     print(
