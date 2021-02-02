@@ -4,7 +4,7 @@ import re
 data_dir = '../data'
 tag_dir = '../data/tags'
 
-file_format = re.compile(r'(.*lavandin*)/([^/]+)\.JPG$')
+file_format = re.compile(r'(.*lavandin.*)/([^/]+)\.JPG$')
 
 
 def file_list(d):
