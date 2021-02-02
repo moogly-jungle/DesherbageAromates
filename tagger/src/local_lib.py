@@ -7,8 +7,9 @@ tag_dir = '../data/tags'
 file_format = re.compile(r'(.*)/([^/]+)\.JPG$')
 
 def file_list(d):
+    print('- current directory: %s' % os.getcwd())
     print('- collecting files of ' + d)
-    all_files = os.popen('find ' + d).readlines()
+    all_files = os.popen('find -L ' + d).readlines()
     all_files = list(map(lambda l:l[0:-1], all_files))
     the_files = []
     for f in all_files:
@@ -18,6 +19,7 @@ def file_list(d):
             file = m.group(2) + '.JPG'
             the_files.append((dir,file))
     the_files = list(sorted(the_files))
+    print('  [%d files ]' % len(the_files))
     return the_files
 
 def get_file_name(fn):
