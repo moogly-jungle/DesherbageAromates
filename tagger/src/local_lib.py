@@ -4,6 +4,9 @@ import re
 data_dir = '../data'
 tag_dir = '../data/tags'
 
+CLASSES = {'plant': 0, 'adventice': 1, 'unknown': 2}
+colors = {'plant': (0, 255, 0), 'adventice': (0, 0, 255), 'unknown':(0,200,255) }
+
 file_format = re.compile(r'(.*lavandin.*)/([^/]+)\.JPG$')
 
 
@@ -56,3 +59,20 @@ def tag_img_file(fn):
         return None
     root = m.group(2)
     return tag_dir + '/' + root + '-TAG.JPG'
+
+def relative_pos(img_size, pos):
+    x = pos[0]/img_size[0]
+    y = pos[1]/img_size[1]
+    if x < 0:
+        x = 0
+    if x > 1:
+        x = 1
+    if y < 0:
+        y = 0
+    if y > 1:
+        y = 1
+    return (x, y)
+
+
+def graphic_pos(img_size, pos):
+    return (int(pos[0]*img_size[0]), int(pos[1]*img_size[1]))

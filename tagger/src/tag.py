@@ -9,6 +9,7 @@ import json
 try:
     from math import abs
 except: pass
+import extract_patch
 
 # TODO: un clear all tag
 
@@ -22,28 +23,6 @@ def get_nth_file_path(n):
 img = None
 img_size = (1024, 768)
 
-
-def relative_pos(pos):
-    x = pos[0]/img_size[0]
-    y = pos[1]/img_size[1]
-    if x < 0:
-        x = 0
-    if x > 1:
-        x = 1
-    if y < 0:
-        y = 0
-    if y > 1:
-        y = 1
-    return (x, y)
-
-
-def graphic_pos(pos):
-    return (int(pos[0]*img_size[0]), int(pos[1]*img_size[1]))
-
-
-CLASSES = {'plant': 0, 'adventice': 1, 'unknown': 2}
-colors = {'plant': (0, 255, 0), 'adventice': (0, 0, 255), 'unknown':(0,200,255) }
-
 typ = 'adventice'
 tags = []
 refPt = []
@@ -51,9 +30,9 @@ cropping = False
 
 
 def draw_tag(img, tag):
-    A = graphic_pos(tag[1])
-    B = graphic_pos(tag[2])
-    cv2.rectangle(img, A, B, colors[tag[0]], 2)
+    A = ll.graphic_pos(img_size, tag[1])
+    B = ll.graphic_pos(img_size, tag[2])
+    cv2.rectangle(img, A, B, ll.colors[tag[0]], 2)
 
 
 def mouse_handler(event, x, y, flags, param):
@@ -64,25 +43,24 @@ def mouse_handler(event, x, y, flags, param):
     elif event == cv2.EVENT_LBUTTONUP:
         refPt.append((x, y))
         cropping = False
-        tags.append((typ, relative_pos(refPt[0]), relative_pos(refPt[1])))
+        tags.append((typ, ll.relative_pos(img_size, refPt[0]), ll.relative_pos(img_size, refPt[1])))
         draw_tag(img, tags[-1])
         cv2.imshow('image', img)
 
 
 def read_tags(fn):
-    global tags
     try:
         with open(ll.tag_file(fn)) as json_file:
-            tags = json.load(json_file)['tags']
+            the_tags = json.load(json_file)['tags']
     except:
-        tags = []
+        the_tags = []
         print('  - no previous tags --')
-
+    return the_tags
 
 def dump_yolo_tags(tags, outfile):
     for t in tags:
         outfile.write("{} {} {} {} {}\n".format(
-            CLASSES[t[0]], (t[1][0]+t[2][0])/2.0, (t[1][1]+t[2][1])/2.0, abs(t[2][0]-t[1][0]), abs(t[2][1]-t[1][1])))
+            ll.CLASSES[t[0]], (t[1][0]+t[2][0])/2.0, (t[1][1]+t[2][1])/2.0, abs(t[2][0]-t[1][0]), abs(t[2][1]-t[1][1])))
 
 
 def save_tags(fn, tagged_img):
@@ -107,7 +85,7 @@ def process_file(fn):
         return
     # TOTO: resize avec proportion
     img = cv2.resize(img, img_size)
-    read_tags(fn)
+    tags = read_tags(fn)
     for t in tags:
         draw_tag(img, t)
     cv2.namedWindow('image')
@@ -143,40 +121,7 @@ def process_file(fn):
     save_tags(fn, img)
     return key
 
-
-def main():
-    global the_files
-    print('usage:')
-    print('- starting tagging:')
-    print('> ' + sys.argv[0] + ' <data_dir> <tag_dir>')
-    print('  (a) selecting adventices')
-    print('  (z) selecting plants')
-    print('  (e) selecting unknown plant')
-    print('  (u) undo')
-    print('  (c) clear')
-    print(
-        '  (s) save tags (they are saved automatically by jumping from image to image')
-    print('  (n) next image')
-    print('  (p) previous image')
-    print('')
-    if len(sys.argv) > 1 and sys.argv[1] == 'help':
-        return
-
-    if len(sys.argv) < 3:
-        return
-
-    ll.data_dir = sys.argv[1]
-    if not os.path.exists(ll.data_dir):
-        print('Error: data directory does not exists ('+sys.argv[1]+'))')
-        return
-    ll.tag_dir = sys.argv[2]
-    if not os.path.exists(ll.tag_dir):
-        os.system('mkdir ' + ll.tag_dir + ' 2>/dev/null')
-        print('tag directory created: ' + ll.tag_dir)
-
-    print('- processing all JPG files in ' + ll.data_dir)
-    the_files = ll.file_list(ll.data_dir)
-
+def tag_process():
     n = 0
     # on cherche le premier fichier non taggé
     while (os.path.isfile(ll.tag_file(get_nth_file_path(n)))):
@@ -191,5 +136,61 @@ def main():
             n = n-1
         if order in [ord('n'), 83] and n < (len(the_files)-1):
             n = n+1
+
+def extract_patch_process():
+    print('- extracting patch of tagged images')
+    for n in [80]: # TODO: 100 est temporaire pour tester 
+        fn = get_nth_file_path(n)
+        print('--- analysing file ' + str(n) + ' : ' + fn)
+        json_file = ll.tag_file(fn)
+        if os.path.isfile(json_file):
+            the_tags = read_tags(fn)
+            extract_patch.extract_patch(fn, the_tags)
+        else:
+            print('no tag data for ' + fn)
+
+def main():
+    global the_files
+    print('usage:')
+    print('- starting tagging:')
+    print('> ' + sys.argv[0] + ' <data_dir> <tag_dir> [special command]')
+    print('  (a) selecting adventices')
+    print('  (z) selecting plants')
+    print('  (e) selecting unknown plant')
+    print('  (u) undo')
+    print('  (c) clear')
+    print('  (s) save tags (they are saved automatically by jumping from image to image')
+    print('  (n) next image')
+    print('  (p) previous image')
+    print('  special command is optional:')
+    print('     - \'extract-patch\' for extracting patch')
+    print('')
+    if len(sys.argv) > 1 and sys.argv[1] == 'help':
+        return
+
+    if len(sys.argv) < 3:
+        return
+
+    special_command = None
+    if len(sys.argv) >= 4:
+        special_command = sys.argv[3]
+
+    ll.data_dir = sys.argv[1]
+    if not os.path.exists(ll.data_dir):
+        print('Error: data directory does not exists ('+sys.argv[1]+'))')
+        return
+    ll.tag_dir = sys.argv[2]
+    if not os.path.exists(ll.tag_dir):
+        os.system('mkdir ' + ll.tag_dir + ' 2>/dev/null')
+        print('tag directory created: ' + ll.tag_dir)
+
+    print('- processing all JPG files in ' + ll.data_dir)
+    the_files = ll.file_list(ll.data_dir)
+
+    if special_command is None:
+        tag_process()
+
+    if special_command == 'extract-patch':
+        extract_patch_process()
 
 main()
