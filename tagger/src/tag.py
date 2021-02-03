@@ -42,7 +42,7 @@ def graphic_pos(pos):
 
 
 CLASSES = {'plant': 0, 'adventice': 1, 'unknown': 2}
-colors = {'plant': (0, 255, 0), 'adventice': (0, 0, 255), 'unknown':(255,0,0) }
+colors = {'plant': (0, 255, 0), 'adventice': (0, 0, 255), 'unknown':(0,200,255) }
 
 typ = 'adventice'
 tags = []
