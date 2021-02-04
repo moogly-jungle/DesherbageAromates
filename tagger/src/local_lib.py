@@ -45,6 +45,13 @@ def tag_file(fn):
     root = m.group(2)
     return tag_dir + '/' + root + '.json'
 
+def roi_file(fn, n):
+    m = file_format.match(fn)
+    if not m:
+        print('Error: ' + fn + ' is not a picture file')
+        return None
+    root = m.group(2)
+    return tag_dir + '/' + root + '-roi-' + str(n) + '.jpg'
 
 def tag_file_yolo(fn):
     m = file_format.match(fn)
