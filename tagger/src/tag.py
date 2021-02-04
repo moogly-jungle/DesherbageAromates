@@ -21,7 +21,7 @@ def get_nth_file_path(n):
 
 
 img = None
-img_size = (1024, 768)
+
 
 typ = 'adventice'
 tags = []
@@ -29,10 +29,7 @@ refPt = []
 cropping = False
 
 
-def draw_tag(img, tag):
-    A = ll.graphic_pos(img_size, tag[1])
-    B = ll.graphic_pos(img_size, tag[2])
-    cv2.rectangle(img, A, B, ll.colors[tag[0]], 2)
+
 
 
 def mouse_handler(event, x, y, flags, param):
@@ -44,7 +41,7 @@ def mouse_handler(event, x, y, flags, param):
         refPt.append((x, y))
         cropping = False
         tags.append((typ, ll.relative_pos(img_size, refPt[0]), ll.relative_pos(img_size, refPt[1])))
-        draw_tag(img, tags[-1])
+        ll.draw_tag(img, tags[-1])
         cv2.imshow('image', img)
 
 
@@ -87,7 +84,7 @@ def process_file(fn):
     img = cv2.resize(img, img_size)
     tags = read_tags(fn)
     for t in tags:
-        draw_tag(img, t)
+        ll.draw_tag(img, t)
     cv2.namedWindow('image')
     cv2.moveWindow('image', 800, 0)
     cv2.setMouseCallback('image', mouse_handler)
@@ -115,7 +112,7 @@ def process_file(fn):
         img = cv2.imread(fn)
         img = cv2.resize(img, img_size)
         for t in tags:
-            draw_tag(img, t)
+            ll.draw_tag(img, t)
         cv2.imshow("image", img)
     cv2.destroyAllWindows()
     save_tags(fn, img)

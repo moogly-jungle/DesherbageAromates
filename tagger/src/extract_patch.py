@@ -20,6 +20,8 @@ def extract_patch(fn, tags):
 
     # MARCEL: dessine les rectangles des patchs avec les bonnes couleurs 
 
+    for t in tags :
+        ll.draw_tag(img, t)
     cv2.namedWindow('image')
     cv2.moveWindow('image', 800, 0)
     cv2.imshow("image", img)

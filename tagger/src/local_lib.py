@@ -1,8 +1,11 @@
 import os
 import re
+import cv2
 
 data_dir = '../data'
 tag_dir = '../data/tags'
+
+img_size = (1024, 768)
 
 CLASSES = {'plant': 0, 'adventice': 1, 'unknown': 2}
 colors = {'plant': (0, 255, 0), 'adventice': (0, 0, 255), 'unknown':(0,200,255) }
@@ -76,3 +79,8 @@ def relative_pos(img_size, pos):
 
 def graphic_pos(img_size, pos):
     return (int(pos[0]*img_size[0]), int(pos[1]*img_size[1]))
+
+def draw_tag(img, tag):
+    A = graphic_pos(img_size, tag[1])
+    B = graphic_pos(img_size, tag[2])
+    cv2.rectangle(img, A, B, colors[tag[0]], 2)
