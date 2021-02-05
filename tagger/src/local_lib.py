@@ -53,6 +53,14 @@ def roi_file(fn, n):
     root = m.group(2)
     return tag_dir + '/' + root + '-roi-' + str(n) + '.jpg'
 
+def roi_histo_file(fn, n):
+    m = file_format.match(fn)
+    if not m:
+        print('Error: ' + fn + ' is not a picture file')
+        return None
+    root = m.group(2)
+    return tag_dir + '/' + root + '-roi-histo-' + str(n) + '.png'
+
 def roi_hsv_file(fn, n):
     m = file_format.match(fn)
     if not m:
