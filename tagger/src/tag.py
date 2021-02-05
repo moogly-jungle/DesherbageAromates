@@ -148,25 +148,25 @@ def extract_patch_process():
         else:
             print('no tag data for ' + fn)
 
-<<<<<<< HEAD
 def extract_patch_hsv_process():
     print('- extracting patch of tagged images')
-=======
-
-def compute_histo():
-    print('- computation of histogram')
->>>>>>> 690c0a6bbe903d23b837b89f200e6c1b1364af3a
     for n in [80]: # TODO: 100 est temporaire pour tester 
         fn = get_nth_file_path(n)
         print('--- analysing file ' + str(n) + ' : ' + fn)
         json_file = ll.tag_file(fn)
         if os.path.isfile(json_file):
             the_tags = read_tags(fn)
-<<<<<<< HEAD
             extract_patch.extract_patch_hsv(fn, the_tags)
-=======
+
+def compute_histo():
+    print('- computation of histogram')
+    for n in [80]: # TODO: 100 est temporaire pour tester 
+        fn = get_nth_file_path(n)
+        print('--- analysing file ' + str(n) + ' : ' + fn)
+        json_file = ll.tag_file(fn)
+        if os.path.isfile(json_file):
+            the_tags = read_tags(fn)
             pstats.compute_histo(fn, the_tags)
->>>>>>> 690c0a6bbe903d23b837b89f200e6c1b1364af3a
         else:
             print('no tag data for ' + fn)
 
