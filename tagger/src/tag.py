@@ -10,6 +10,7 @@ try:
     from math import abs
 except: pass
 import extract_patch
+import patch_statistics as pstats
 
 # TODO: un clear all tag
 
@@ -147,15 +148,25 @@ def extract_patch_process():
         else:
             print('no tag data for ' + fn)
 
+<<<<<<< HEAD
 def extract_patch_hsv_process():
     print('- extracting patch of tagged images')
+=======
+
+def compute_histo():
+    print('- computation of histogram')
+>>>>>>> 690c0a6bbe903d23b837b89f200e6c1b1364af3a
     for n in [80]: # TODO: 100 est temporaire pour tester 
         fn = get_nth_file_path(n)
         print('--- analysing file ' + str(n) + ' : ' + fn)
         json_file = ll.tag_file(fn)
         if os.path.isfile(json_file):
             the_tags = read_tags(fn)
+<<<<<<< HEAD
             extract_patch.extract_patch_hsv(fn, the_tags)
+=======
+            pstats.compute_histo(fn, the_tags)
+>>>>>>> 690c0a6bbe903d23b837b89f200e6c1b1364af3a
         else:
             print('no tag data for ' + fn)
 
@@ -174,6 +185,7 @@ def main():
     print('  (p) previous image')
     print('  special command is optional:')
     print('     - \'extract-patch\' for extracting patch')
+    print('     - \'histo\' compute histograms')
     print('')
     if len(sys.argv) > 1 and sys.argv[1] == 'help':
         return
@@ -202,6 +214,9 @@ def main():
 
     if special_command == 'extract-patch':
         extract_patch_process()
+    
+    if special_command == 'histo':
+        compute_histo()
 
     if special_command == 'extract-patch-hsv':
         extract_patch_hsv_process()

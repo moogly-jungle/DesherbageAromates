@@ -91,7 +91,6 @@ def relative_pos(img_size, pos):
         y = 1
     return (x, y)
 
-
 def graphic_pos(img_size, pos):
     return (int(pos[0]*img_size[0]), int(pos[1]*img_size[1]))
 
