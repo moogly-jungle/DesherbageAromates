@@ -119,6 +119,7 @@ def process_file(fn):
     return key
 
 def tag_process():
+    global n
     n = 0
     # on cherche le premier fichier non taggé
     while (os.path.isfile(ll.tag_file(get_nth_file_path(n)))):
@@ -143,6 +144,18 @@ def extract_patch_process():
         if os.path.isfile(json_file):
             the_tags = read_tags(fn)
             extract_patch.extract_patch(fn, the_tags)
+        else:
+            print('no tag data for ' + fn)
+
+def extract_patch_hsv_process():
+    print('- extracting patch of tagged images')
+    for n in [80]: # TODO: 100 est temporaire pour tester 
+        fn = get_nth_file_path(n)
+        print('--- analysing file ' + str(n) + ' : ' + fn)
+        json_file = ll.tag_file(fn)
+        if os.path.isfile(json_file):
+            the_tags = read_tags(fn)
+            extract_patch.extract_patch_hsv(fn, the_tags)
         else:
             print('no tag data for ' + fn)
 
@@ -189,5 +202,8 @@ def main():
 
     if special_command == 'extract-patch':
         extract_patch_process()
+
+    if special_command == 'extract-patch-hsv':
+        extract_patch_hsv_process()
 
 main()

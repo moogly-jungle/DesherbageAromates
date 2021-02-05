@@ -53,6 +53,14 @@ def roi_file(fn, n):
     root = m.group(2)
     return tag_dir + '/' + root + '-roi-' + str(n) + '.jpg'
 
+def roi_hsv_file(fn, n):
+    m = file_format.match(fn)
+    if not m:
+        print('Error: ' + fn + ' is not a picture file')
+        return None
+    root = m.group(2)
+    return tag_dir + '/' + root + '-roi-HSV-' + str(n) + '.jpg'
+
 def tag_file_yolo(fn):
     m = file_format.match(fn)
     if not m:
@@ -88,6 +96,23 @@ def graphic_pos(img_size, pos):
     return (int(pos[0]*img_size[0]), int(pos[1]*img_size[1]))
 
 def draw_tag(img, tag):
+
     A = graphic_pos(img_size, tag[1])
     B = graphic_pos(img_size, tag[2])
     cv2.rectangle(img, A, B, colors[tag[0]], 2)
+
+def cut_patch(img, x1, y1, x2, y2) :
+
+    if (x1 > x2) :
+        i = x1
+        x1 = x2
+        x2 = i
+    
+    if(y1 > y2) :
+        j = y1
+        y1 = y2
+        y2 = j
+
+    image_coupee = img[y1:y2, x1:x2]
+
+    return image_coupee
